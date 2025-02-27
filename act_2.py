@@ -36,7 +36,7 @@ axes[1].imshow(binary_img, cmap='gray')
 axes[1].set_title("Blanco y Negro")
 axes[1].axis('off')
 
-# plt.show()
+plt.show()
 
 
 # Cambiar el tamaño de la imagen (Reducción y Amplificación)

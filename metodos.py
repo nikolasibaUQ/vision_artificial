@@ -2,7 +2,6 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-from scipy import stats
 
 import cv2
 import os
@@ -510,71 +509,138 @@ def dilated_image(input_path: str, output_path: str = '', save: bool = False, ke
     cv2.destroyAllWindows()
 
 
-def get_media_image(input_path: str):
+def delete_noides_opened_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
 
     # Cargar la imagen
-    img = cv2.imread(input_path)
-
+    img = cv2.imread(input_path, 0)
+    
     # Verificar si la imagen se cargó correctamente
+    
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-
-    # Obtener la mediana de la imagen
-    pixels = img.flatten()
-    media = np.mean(pixels)
-
-    return media
-
-def get_mode_image(input_path: str):
-
-    # Cargar la imagen
-    img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
-
-    # Verificar si la imagen se cargó correctamente
-    if img is None:
-        raise ValueError(
-            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-
-    # Obtener la moda de la imagen
-    pixels = img.flatten()
-    mode = stats.mode(pixels , keepdims=True )[0][0]
-
-    return mode
-
-
-
-def get_mean_image(input_path: str):
-
-    # Cargar la imagen
-    img = cv2.imread(input_path)
-
-    # Verificar si la imagen se cargó correctamente
-    if img is None:
-        raise ValueError(
-            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-
-    pixels = img.flatten()
-    # Obtener la media de la imagen
-    mean = np.mean(pixels)
-
-    return mean
-
-
-def get_desviation_image(input_path: str):
-
-    # Cargar la imagen
-    img = cv2.imread(input_path)
-
-    # Verificar si la imagen se cargó correctamente
-    if img is None:
-        raise ValueError(
-            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-
-    pixels = img.flatten()
-    desviation = np.std(pixels)
-
-    return desviation
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    opening_img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+    
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, opening_img)
+    
+    cv2.imshow('Apertura', opening_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
 
-   
+def delete_noides_closed_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+    
+    # Verificar si la imagen se cargó correctamente
+    
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    closed_img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+    
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, closed_img)
+    
+    cv2.imshow('Cerradura', closed_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+def gradient_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+    
+    # Verificar si la imagen se cargó correctamente
+    
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
+
+    
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, gradient)
+    
+    cv2.imshow('Gradiente', gradient)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+def fill_noise_opened( input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+    
+    # Verificar si la imagen se cargó correctamente
+    
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    opened_img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    closed_img = cv2.morphologyEx(opened_img, cv2.MORPH_CLOSE, kernel)
+    
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, closed_img)
+    
+    cv2.imshow('Ruido eliminado', closed_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+def fill_noise_closed( input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+    
+    # Verificar si la imagen se cargó correctamente
+    
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+    
+    # Crear un kernel para la apertura
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    closed_img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+    
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, closed_img)
+    
+    cv2.imshow('Ruido eliminado', closed_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+    

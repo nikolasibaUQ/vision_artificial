@@ -3,7 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Leer la imagen (en formato RGB)
-img = cv2.imread('resources/images.jpeg')
+img = cv2.imread('act1/resources/images.jpeg')
 
 # Convertir la imagen de BGR a RGB (OpenCV usa BGR por defecto)
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

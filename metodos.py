@@ -70,7 +70,7 @@ def binary_image(input_path: str, output_path: str = '', save: bool = False, thr
     cv2.destroyAllWindows()
 
 
-def normal_image(input_path: str, ):
+def normal_image(input_path: str):
 
     input_path = os.path.abspath(input_path)
     img = cv2.imread(input_path)
@@ -348,7 +348,6 @@ def or_images(input_path1: str, input_path2: str, output_path: str = '', save: b
     cv2.destroyAllWindows()
 
 
-
 def blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 50):
 
     # Cargar la imagen
@@ -371,7 +370,6 @@ def blur_image(input_path: str, output_path: str = '', save: bool = False, kerne
     cv2.imshow('Desenfoque', blurred_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
 
 
 def gaussian_blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 51):
@@ -427,7 +425,6 @@ def sharpen_image(input_path: str, output_path: str = '', save: bool = False):
     cv2.destroyAllWindows()
 
 
-
 def detect_edges(input_path: str, output_path: str = '', save: bool = False, low_threshold: int = 50, high_threshold: int = 150):
 
     # Cargar la imagen
@@ -450,7 +447,6 @@ def detect_edges(input_path: str, output_path: str = '', save: bool = False, low
     cv2.imshow('Detector de bordes', edges_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
 
 
 def emboss_image(input_path: str, output_path: str = '', save: bool = False):
@@ -513,134 +509,572 @@ def delete_noides_opened_image(input_path: str, output_path: str = '', save: boo
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
-    
+
     # Verificar si la imagen se cargó correctamente
-    
+
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     opening_img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-    
+
     # Guardar la imagen resultante
     if output_path != '' and save:
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, opening_img)
-    
+
     cv2.imshow('Apertura', opening_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    
+
 
 def delete_noides_closed_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
-    
+
     # Verificar si la imagen se cargó correctamente
-    
+
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     closed_img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-    
+
     # Guardar la imagen resultante
     if output_path != '' and save:
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
-    
+
     cv2.imshow('Cerradura', closed_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    
+
 
 def gradient_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
-    
+
     # Verificar si la imagen se cargó correctamente
-    
+
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
 
-    
     # Guardar la imagen resultante
     if output_path != '' and save:
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, gradient)
-    
+
     cv2.imshow('Gradiente', gradient)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    
 
-def fill_noise_opened( input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+
+def fill_noise_opened(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
-    
+
     # Verificar si la imagen se cargó correctamente
-    
+
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     opened_img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     closed_img = cv2.morphologyEx(opened_img, cv2.MORPH_CLOSE, kernel)
-    
+
     # Guardar la imagen resultante
     if output_path != '' and save:
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
-    
+
     cv2.imshow('Ruido eliminado', closed_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    
 
-def fill_noise_closed( input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+
+def fill_noise_closed(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
-    
+
     # Verificar si la imagen se cargó correctamente
-    
+
     if img is None:
         raise ValueError(
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-    
+
     # Crear un kernel para la apertura
     kernel = np.ones((kernel_size, kernel_size), np.uint8)
-    
+
     closed_img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-    
+
     # Guardar la imagen resultante
     if output_path != '' and save:
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
-    
+
     cv2.imshow('Ruido eliminado', closed_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    
-    
+
+
+def segmentation_umbral_image(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+
+    # Verificar si la imagen se cargó correctamente
+
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Crear un kernel para la apertura
+    # se puso 200 ya que mas bajo algunos elementos se pierden
+    ret, thresholded_image = cv2.threshold(
+        img, min_umbral, max_umbral, cv2.THRESH_BINARY)
+
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, thresholded_image)
+
+    cv2.imshow('Segmentación por umbral', thresholded_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+def segmentation_adaptative_image(input_path: str, output_path: str = '', save: bool = False, max_umbral: int = 255):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, 0)
+
+    # Verificar si la imagen se cargó correctamente
+
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Crear un kernel para la apertura
+    # se puso 200 ya que mas bajo algunos elementos se pierden
+    thresholded_image = cv2.adaptiveThreshold(
+        img, max_umbral, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, thresholded_image)
+
+    cv2.imshow('Segmentación adaptativa', thresholded_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+def segmentation_contornos(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255):
+
+    img = cv2.imread(input_path, 0)
+
+    # Verificar si la imagen se cargó correctamente
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Aplicar umbralización
+    _, thresholded_image = cv2.threshold(
+        img, min_umbral, max_umbral, cv2.THRESH_BINARY)
+
+    # Encontrar los contornos
+    contours, _ = cv2.findContours(
+        thresholded_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Convertir la imagen binarizada a color para dibujar los contornos
+    img_contours = cv2.cvtColor(thresholded_image, cv2.COLOR_GRAY2BGR)
+    cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 2)
+
+    # Guardar la imagen resultante si se requiere
+    if save and output_path:
+        output_path = os.path.abspath(output_path)  # Convertir a ruta absoluta
+        cv2.imwrite(output_path, img_contours)
+
+    # Mostrar la imagen con contornos usando Matplotlib
+    plt.figure(figsize=(6, 6))
+    plt.title('Segmentación por Contornos')
+    # Convertir BGR a RGB para mostrar en Matplotlib
+    plt.imshow(cv2.cvtColor(img_contours, cv2.COLOR_BGR2RGB))
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+
+def segmentation_kmeans(input_path: str, output_path: str = '', save: bool = False, k: int = 2):
+
+    # Cargar imagen en color
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Convertir la imagen en una matriz de datos 2D (cada fila representa un píxel con 3 valores RGB)
+    Z = image.reshape((-1, 3))
+    Z = np.float32(Z)  # Convertir a flotante
+
+    # Definir criterios de k-means: Máx 100 iteraciones o precisión mínima de 0.2
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2)
+
+    # Aplicar k-means
+    ret, label, center = cv2.kmeans(
+        Z, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+
+    # Convertir los centros a enteros de 8 bits
+    center = np.uint8(center)
+
+    # Reemplazar los píxeles por el centro de su respectivo cluster
+    res = center[label.flatten()]
+    result_image = res.reshape((image.shape))
+
+    # Guardar la imagen segmentada si es necesario
+    if save and output_path:
+        output_path = os.path.abspath(output_path)  # Convertir a ruta absoluta
+        cv2.imwrite(output_path, result_image)
+
+    # Mostrar la imagen segmentada con Matplotlib
+    plt.figure(figsize=(6, 6))
+    plt.title(f'Segmentación con K-means (k={k})')
+    # Convertir BGR a RGB para Matplotlib
+    plt.imshow(cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB))
+    plt.axis('off')  # Ocultar ejes
+    plt.show()
+
+
+def segmentation_watershed(input_path: str, output_path: str = '', save: bool = False):
+
+    # Cargar la imagen en color
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Convertir la imagen a escala de grises
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    _, thresholded_image = cv2.threshold(
+        gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    # Hallar los contornos
+    dist_transform = cv2.distanceTransform(thresholded_image, cv2.DIST_L2, 5)
+    _, markers = cv2.threshold(
+        dist_transform, 0.7*dist_transform.max(), 255, 0)
+
+    # Aplicar watershed
+    markers = np.int32(markers)
+    cv2.watershed(image, markers)
+
+    # Marcamos los bordes en color rojo
+    image[markers == -1] = [0, 0, 255]
+
+    # Mostrar la imagen segmentada
+    # cv2.imshow('Segmentación con Watershed', image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    plt.title('Segmentación con Watershed')
+    plt.imshow(image, cmap='gray')
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+
+def seed_points(input_path: str, output_path: str = '', save: bool = False):
+
+    # Cargar la imagen en color
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Umbral para definir la región de inicio
+   # Umbral para definir la región de inicio
+    _, thresholded_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+
+    plt.title('Segmentación Crecimiento de Regiones')
+    plt.imshow(thresholded_image, cmap='gray')
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+
+def region_growing(image, seed_points, threshold=20):
+    """Algoritmo de crecimiento de regiones a partir de puntos semilla."""
+    rows, cols = image.shape
+    mask = np.zeros_like(image, dtype=np.uint8)  # Máscara inicial
+
+    for seed in seed_points:
+        mask[seed] = 255  # Marcar la semilla
+        region_mean = image[seed]  # Valor inicial
+
+        # Expansión de la región
+        for i in range(rows):
+            for j in range(cols):
+                if mask[i, j] == 0:  # Si el píxel no está marcado
+                    if abs(int(image[i, j]) - int(region_mean)) < threshold:
+                        mask[i, j] = 255  # Agregar el píxel a la región
+
+    return mask
+
+
+def segmentation_region_growing(input_path: str, output_path: str = '', save: bool = False):
+    """Segmentación de una imagen usando crecimiento de regiones."""
+
+    # Cargar la imagen
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo."
+        )
+
+    # Convertir la imagen a escala de grises
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Definir puntos semilla (ajustar según la imagen)
+    seed_points = [(100, 100), (200, 200)]
+    result_mask = region_growing(gray, seed_points, threshold=20)
+
+    # Mostrar la imagen original y la segmentación
+    fig, ax = plt.subplots(2, 1, figsize=(6, 10))
+
+    ax[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    ax[0].set_title("Imagen Original")
+    ax[0].axis("off")
+
+    ax[1].imshow(result_mask, cmap="inferno")
+    ax[1].set_title("Máscara Segmentada")
+    ax[1].axis("off")
+
+    plt.show()
+
+    # Guardar la imagen si se especifica
+    if save and output_path != '':
+        cv2.imwrite(output_path, result_mask)
+
+
+def segmentation_watershed_contours(input_path: str, output_path: str = '', save: bool = False):
+    """Segmentación de una imagen usando Watershed basado en contornos."""
+
+    # Cargar la imagen
+    img = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo."
+        )
+
+    # Convertir la imagen a escala de grises
+   # Convertir la imagen a escala de grises
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Aplicar un umbral binario
+    _, thresh = cv2.threshold(
+        gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    # Encontrar los contornos
+    contours, _ = cv2.findContours(
+        thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Crear una imagen vacía para los marcadores con 1 canal
+    # Changed to gray and dtype to int32
+    markers = np.zeros_like(gray, dtype=np.int32)
+
+    # Definir los seed points (por ejemplo, marcar manualmente las regiones de interés)
+    for i in range(len(contours)):
+        cv2.drawContours(markers, contours, i, (i + 1), -1)
+
+    # Marcar el fondo como -1
+    markers[thresh == 0] = -1
+
+    # Aplicar Watershed
+    cv2.watershed(img, markers)
+
+    # Las fronteras de los objetos serán marcadas con -1
+    img[markers == -1] = [0, 0, 255]  # Rojo para las fronteras
+
+    # Mostrar la imagen resultante
+
+    plt.title('Segmentación Watershed')
+    plt.imshow(img)
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+    # Guardar la imagen si se especifica
+    if save and output_path:
+        cv2.imwrite(output_path, img)
+
+
+def segmentation_by_color(input_path: str, lower_bound: tuple, upper_bound: tuple, output_path: str = '', save: bool = False):
+    """Segmenta una imagen basada en un rango de color en el espacio HSV."""
+
+    # Cargar la imagen en color
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo."
+        )
+
+    # Convertir a espacio de color HSV
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+    # Convertir las entradas de tuple a arrays numpy
+    lower_bound = np.array(lower_bound, dtype=np.uint8)
+    upper_bound = np.array(upper_bound, dtype=np.uint8)
+
+    # Crear máscara para segmentar el color dentro del rango especificado
+    mask = cv2.inRange(hsv_image, lower_bound, upper_bound)
+
+    # Aplicar máscara sobre la imagen original
+    segmented_image = cv2.bitwise_and(image, image, mask=mask)
+
+    # Mostrar la imagen original y la segmentada
+    fig, ax = plt.subplots(2, 1, figsize=(6, 10))
+
+    ax[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    ax[0].set_title("Imagen Original")
+    ax[0].axis("off")
+
+    ax[1].imshow(cv2.cvtColor(segmented_image, cv2.COLOR_BGR2RGB))
+    ax[1].set_title("Imagen Segmentada por Color")
+    ax[1].axis("off")
+
+    plt.show()
+
+    # Guardar la imagen segmentada si se especifica
+    if save and output_path:
+        cv2.imwrite(output_path, segmented_image)
+
+
+def segmentation_by_color_range(input_path: str, lower_bounds: list, upper_bounds: list, output_path: str = '', save: bool = False):
+    """
+    Segmenta una imagen basada en uno o más rangos de color en el espacio HSV.
+
+    Parámetros:
+    - input_path: Ruta de la imagen de entrada.
+    - lower_bounds: Lista de rangos inferiores en HSV (puede incluir más de uno).
+    - upper_bounds: Lista de rangos superiores en HSV (debe tener la misma cantidad que lower_bounds).
+    - output_path: Ruta de la imagen segmentada (si se desea guardar).
+    - save: Booleano para decidir si guardar la imagen segmentada.
+    """
+
+    # Cargar la imagen en color
+    image = cv2.imread(input_path)
+
+    # Verificar si la imagen se cargó correctamente
+    if image is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo."
+        )
+
+    # Convertir la imagen de BGR a HSV
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+    # Verificar que lower_bounds y upper_bounds tengan la misma cantidad de rangos
+    if len(lower_bounds) != len(upper_bounds):
+        raise ValueError(
+            "Error: lower_bounds y upper_bounds deben tener la misma cantidad de elementos.")
+
+    # Crear una máscara vacía
+    mask = np.zeros_like(hsv[:, :, 0], dtype=np.uint8)
+
+    # Aplicar segmentación para cada par de rangos de color
+    for lower, upper in zip(lower_bounds, upper_bounds):
+        lower = np.array(lower, dtype=np.uint8)
+        upper = np.array(upper, dtype=np.uint8)
+        # Combinar las máscaras de los rangos
+        mask |= cv2.inRange(hsv, lower, upper)
+
+    # Aplicar la máscara a la imagen original
+    segmented_image = cv2.bitwise_and(image, image, mask=mask)
+
+    # Mostrar la imagen original y la segmentada
+    fig, ax = plt.subplots(2, 1, figsize=(6, 10))
+
+    ax[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    ax[0].set_title("Imagen Original")
+    ax[0].axis("off")
+
+    ax[1].imshow(mask, cmap="gray")
+    ax[1].set_title("Máscara de Segmentación")
+    ax[1].axis("off")
+
+    plt.show()
+
+    # Guardar la imagen segmentada si se especifica
+    if save and output_path:
+        cv2.imwrite(output_path, segmented_image)
+
+    # return segmented_image
+
+
+def apply_binary_mask(input_path: str, minValue: int = 100, maxValue = 255,  output_path: str = '', save: bool = False):
+    """
+    Aplica una máscara binaria a una imagen en escala de grises.
+
+    Parámetros:
+    - input_path: Ruta de la imagen de entrada.
+    - threshold_value: Valor del umbral (los píxeles mayores a este serán blancos, los demás negros).
+    - output_path: Ruta de la imagen segmentada (si se desea guardar).
+    - save: Booleano para decidir si guardar la imagen segmentada.
+    """
+
+    # Cargar la imagen en escala de grises
+    img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
+
+    # Verificar si la imagen se cargó correctamente
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Crear una máscara binaria (por ejemplo, seleccionar píxeles que sean mayores que 100)
+    _, mask = cv2.threshold(img, minValue , maxValue, cv2.THRESH_BINARY)
+
+    # Aplicar la máscara a la imagen original usando bitwise_and
+    result = cv2.bitwise_and(img, img, mask=mask)
+
+    # Mostrar la imagen original, la máscara y el resultado
+    plt.title('Segmentación de Color')
+    plt.imshow(mask, cmap='gray')
+    plt.axis('off')  # Ocultar los ejes
+    plt.show()
+
+
+# Guardar la imagen segmentada si se especifica
+    if save and output_path:
+        cv2.imwrite(output_path, mask)
+
+    # return result

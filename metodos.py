@@ -7,7 +7,7 @@ import cv2
 import os
 
 
-def convert_RGB(input_path: str, output_path: str = '', save: bool = False):
+def convert_RGB(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -27,12 +27,13 @@ def convert_RGB(input_path: str, output_path: str = '', save: bool = False):
 
     # Mostrar la imagen si se solicita
 
-    cv2.imshow('Imagen RGB', img_rgb)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen RGB', img_rgb)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def gray_image(input_path: str, output_path: str = '', save: bool = False):
+def gray_image(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -41,12 +42,13 @@ def gray_image(input_path: str, output_path: str = '', save: bool = False):
         output_path = os.path.abspath(output_path)
         cv2.imwrite(output_path, img)
 
-    cv2.imshow('Imagen en escala de grises', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen en escala de grises', img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def binary_image(input_path: str, output_path: str = '', save: bool = False, threshold: int = 1, max_value: int = 255):
+def binary_image(input_path: str, output_path: str = '', save: bool = False, threshold: int = 1, max_value: int = 255, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -65,22 +67,24 @@ def binary_image(input_path: str, output_path: str = '', save: bool = False, thr
         cv2.imwrite(output_path, img_binary)
 
     # Mostrar la imagen binarizada si se solicita
-    cv2.imshow('Imagen binarizada', img_binary)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen binarizada', img_binary)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def normal_image(input_path: str):
+def normal_image(input_path: str, show: bool = False):
 
     input_path = os.path.abspath(input_path)
     img = cv2.imread(input_path)
 
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    plt.axis('off')
-    plt.show()
+    if show:
+        plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        plt.axis('off')
+        plt.show()
 
 
-def convert_gray_scale(input_path: str, output_path: str = '', save: bool = False):
+def convert_gray_scale(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -99,12 +103,13 @@ def convert_gray_scale(input_path: str, output_path: str = '', save: bool = Fals
         cv2.imwrite(output_path, img_gray)
 
     # Mostrar la imagen en escala de grises si se solicita
-    cv2.imshow('Imagen en escala de grises', img_gray)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen en escala de grises', img_gray)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def convert_binary_image(input_path: str, output_path: str = '', save: bool = False, threshold: int = 128, max_value: int = 255):
+def convert_binary_image(input_path: str, output_path: str = '', save: bool = False, threshold: int = 128, max_value: int = 255, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -128,12 +133,13 @@ def convert_binary_image(input_path: str, output_path: str = '', save: bool = Fa
         cv2.imwrite(output_path, binary_img)
 
     # Mostrar la imagen binarizada si se solicita
-    cv2.imshow('Imagen binarizada', binary_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen binarizada', binary_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def resize_image(input_path: str, output_path: str = '', save: bool = False, width: int = 400, height: int = 400):
+def resize_image(input_path: str, output_path: str = '', save: bool = False, width: int = 400, height: int = 400, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -152,12 +158,13 @@ def resize_image(input_path: str, output_path: str = '', save: bool = False, wid
         cv2.imwrite(output_path, resized_img)
 
     # Mostrar la imagen redimensionada si se solicita
-    cv2.imshow('Imagen redimensionada', resized_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen redimensionada', resized_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def rotate_image(input_path: str, output_path: str = '', save: bool = False, angle: int = 45):
+def rotate_image(input_path: str, output_path: str = '', save: bool = False, angle: int = 45, show: bool = False):
 
     img = cv2.imread(input_path)
 
@@ -183,12 +190,13 @@ def rotate_image(input_path: str, output_path: str = '', save: bool = False, ang
         cv2.imwrite(output_path, rotated_img)
 
     # Mostrar la imagen rotada si se solicita
-    cv2.imshow('Imagen rotada', rotated_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Imagen rotada', rotated_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def add_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def add_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1)
@@ -208,12 +216,13 @@ def add_images(input_path1: str, input_path2: str, output_path: str = '', save: 
         cv2.imwrite(output_path, sum_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Suma de imágenes', sum_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Suma de imágenes', sum_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def subtract_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def subtract_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1)
@@ -233,12 +242,13 @@ def subtract_images(input_path1: str, input_path2: str, output_path: str = '', s
         cv2.imwrite(output_path, diff_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Resta de imágenes', diff_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Resta de imágenes', diff_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def multiply_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def multiply_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1)
@@ -258,12 +268,13 @@ def multiply_images(input_path1: str, input_path2: str, output_path: str = '', s
         cv2.imwrite(output_path, mult_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Multiplicación de imágenes', mult_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Multiplicación de imágenes', mult_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def divide_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def divide_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1)
@@ -293,12 +304,13 @@ def divide_images(input_path1: str, input_path2: str, output_path: str = '', sav
         cv2.imwrite(output_path, div_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('División de imágenes', div_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('División de imágenes', div_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def and_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def and_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1, cv2.IMREAD_GRAYSCALE)
@@ -318,12 +330,13 @@ def and_images(input_path1: str, input_path2: str, output_path: str = '', save: 
         cv2.imwrite(output_path, and_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Operación AND', and_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Operación AND', and_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def or_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False):
+def or_images(input_path1: str, input_path2: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar las imágenes
     img1 = cv2.imread(input_path1, cv2.IMREAD_GRAYSCALE)
@@ -343,12 +356,38 @@ def or_images(input_path1: str, input_path2: str, output_path: str = '', save: b
         cv2.imwrite(output_path, or_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Operación OR', or_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Operación OR', or_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 50):
+def not_images(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
+
+    # Cargar la imagen
+    img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
+
+    # Verificar si la imagen se cargó correctamente
+    if img is None:
+        raise ValueError(
+            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
+
+    # Realizar la operación NOT
+    not_img = cv2.bitwise_not(img)
+
+    # Guardar la imagen resultante
+    if output_path != '' and save:
+        output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
+        cv2.imwrite(output_path, not_img)
+
+    # Mostrar la imagen resultante
+    if show:
+        cv2.imshow('Operación NOT', not_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+
+def blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 50, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -367,12 +406,13 @@ def blur_image(input_path: str, output_path: str = '', save: bool = False, kerne
         cv2.imwrite(output_path, blurred_img)
 
     # Mostrar la imagen filtrada
-    cv2.imshow('Desenfoque', blurred_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Desenfoque', blurred_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def gaussian_blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 51):
+def gaussian_blur_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 51, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -391,12 +431,13 @@ def gaussian_blur_image(input_path: str, output_path: str = '', save: bool = Fal
         cv2.imwrite(output_path, gaussian_blurred_img)
 
     # Mostrar la imagen filtrada
-    cv2.imshow('Desenfoque Gaussiano', gaussian_blurred_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Desenfoque Gaussiano', gaussian_blurred_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def sharpen_image(input_path: str, output_path: str = '', save: bool = False):
+def sharpen_image(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path)
@@ -420,12 +461,13 @@ def sharpen_image(input_path: str, output_path: str = '', save: bool = False):
         cv2.imwrite(output_path, sharpened_img)
 
     # Mostrar la imagen filtrada
-    cv2.imshow('Nitidez', sharpened_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Nitidez', sharpened_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def detect_edges(input_path: str, output_path: str = '', save: bool = False, low_threshold: int = 50, high_threshold: int = 150):
+def detect_edges(input_path: str, output_path: str = '', save: bool = False, low_threshold: int = 50, high_threshold: int = 150, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -444,12 +486,13 @@ def detect_edges(input_path: str, output_path: str = '', save: bool = False, low
         cv2.imwrite(output_path, edges_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Detector de bordes', edges_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Detector de bordes', edges_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def emboss_image(input_path: str, output_path: str = '', save: bool = False):
+def emboss_image(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -473,12 +516,13 @@ def emboss_image(input_path: str, output_path: str = '', save: bool = False):
         cv2.imwrite(output_path, embossed_img)
 
     # Mostrar la imagen filtrada
-    cv2.imshow('Filtro de relieve', embossed_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Filtro de relieve', embossed_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def dilated_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def dilated_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -500,12 +544,13 @@ def dilated_image(input_path: str, output_path: str = '', save: bool = False, ke
         cv2.imwrite(output_path, dilated_img)
 
     # Mostrar la imagen resultante
-    cv2.imshow('Dilatación', dilated_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Dilatación', dilated_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def delete_noides_opened_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def delete_noides_opened_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -526,12 +571,13 @@ def delete_noides_opened_image(input_path: str, output_path: str = '', save: boo
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, opening_img)
 
-    cv2.imshow('Apertura', opening_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Apertura', opening_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def delete_noides_closed_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def delete_noides_closed_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -552,12 +598,13 @@ def delete_noides_closed_image(input_path: str, output_path: str = '', save: boo
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
 
-    cv2.imshow('Cerradura', closed_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Cerradura', closed_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def gradient_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def gradient_image(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -578,12 +625,13 @@ def gradient_image(input_path: str, output_path: str = '', save: bool = False, k
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, gradient)
 
-    cv2.imshow('Gradiente', gradient)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Gradiente', gradient)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def fill_noise_opened(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def fill_noise_opened(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -609,12 +657,13 @@ def fill_noise_opened(input_path: str, output_path: str = '', save: bool = False
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
 
-    cv2.imshow('Ruido eliminado', closed_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Ruido eliminado', closed_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def fill_noise_closed(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5):
+def fill_noise_closed(input_path: str, output_path: str = '', save: bool = False, kernel_size: int = 5, show: bool = False):
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
 
@@ -634,12 +683,13 @@ def fill_noise_closed(input_path: str, output_path: str = '', save: bool = False
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, closed_img)
 
-    cv2.imshow('Ruido eliminado', closed_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow('Ruido eliminado', closed_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def segmentation_umbral_image(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255):
+def segmentation_umbral_image(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -660,12 +710,14 @@ def segmentation_umbral_image(input_path: str, output_path: str = '', save: bool
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, thresholded_image)
 
-    cv2.imshow('Segmentación por umbral', thresholded_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Mostrar la imagen resultante
+    if show:
+        cv2.imshow('Segmentación por umbral', thresholded_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def segmentation_adaptative_image(input_path: str, output_path: str = '', save: bool = False, max_umbral: int = 255):
+def segmentation_adaptative_image(input_path: str, output_path: str = '', save: bool = False, max_umbral: int = 255, show: bool = False):
 
     # Cargar la imagen
     img = cv2.imread(input_path, 0)
@@ -686,12 +738,15 @@ def segmentation_adaptative_image(input_path: str, output_path: str = '', save: 
         output_path = os.path.abspath(output_path)  # Asegurar salida absoluta
         cv2.imwrite(output_path, thresholded_image)
 
-    cv2.imshow('Segmentación adaptativa', thresholded_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Mostrar la imagen resultante
+    if show:
+
+        cv2.imshow('Segmentación adaptativa', thresholded_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def segmentation_contornos(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255):
+def segmentation_contornos(input_path: str, output_path: str = '', save: bool = False, min_umbral: int = 128, max_umbral: int = 255, show: bool = False):
 
     img = cv2.imread(input_path, 0)
 
@@ -718,15 +773,18 @@ def segmentation_contornos(input_path: str, output_path: str = '', save: bool = 
         cv2.imwrite(output_path, img_contours)
 
     # Mostrar la imagen con contornos usando Matplotlib
-    plt.figure(figsize=(6, 6))
-    plt.title('Segmentación por Contornos')
-    # Convertir BGR a RGB para mostrar en Matplotlib
-    plt.imshow(cv2.cvtColor(img_contours, cv2.COLOR_BGR2RGB))
-    plt.axis('off')  # Ocultar los ejes
-    plt.show()
+
+    if show:
+        plt.figure(figsize=(6, 6))
+        plt.title('Segmentación por Contornos')
+        # Convertir BGR a RGB para mostrar en Matplotlib
+        plt.imshow(cv2.cvtColor(img_contours, cv2.COLOR_BGR2RGB))
+        plt.axis('off')  # Ocultar los ejes
+        plt.show()
+    
 
 
-def segmentation_kmeans(input_path: str, output_path: str = '', save: bool = False, k: int = 2):
+def segmentation_kmeans(input_path: str, output_path: str = '', save: bool = False, k: int = 2, show: bool = False):
 
     # Cargar imagen en color
     image = cv2.imread(input_path)
@@ -760,15 +818,16 @@ def segmentation_kmeans(input_path: str, output_path: str = '', save: bool = Fal
         cv2.imwrite(output_path, result_image)
 
     # Mostrar la imagen segmentada con Matplotlib
-    plt.figure(figsize=(6, 6))
-    plt.title(f'Segmentación con K-means (k={k})')
-    # Convertir BGR a RGB para Matplotlib
-    plt.imshow(cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB))
-    plt.axis('off')  # Ocultar ejes
-    plt.show()
+    if show:
+        plt.figure(figsize=(6, 6))
+        plt.title(f'Segmentación con K-means (k={k})')
+        # Convertir BGR a RGB para Matplotlib
+        plt.imshow(cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB))
+        plt.axis('off')  # Ocultar ejes
+        plt.show()
 
 
-def segmentation_watershed(input_path: str, output_path: str = '', save: bool = False):
+def segmentation_watershed(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen en color
     image = cv2.imread(input_path)
@@ -800,31 +859,11 @@ def segmentation_watershed(input_path: str, output_path: str = '', save: bool = 
     # cv2.imshow('Segmentación con Watershed', image)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
-
-    plt.title('Segmentación con Watershed')
-    plt.imshow(image, cmap='gray')
-    plt.axis('off')  # Ocultar los ejes
-    plt.show()
-
-
-def seed_points(input_path: str, output_path: str = '', save: bool = False):
-
-    # Cargar la imagen en color
-    image = cv2.imread(input_path)
-
-    # Verificar si la imagen se cargó correctamente
-    if image is None:
-        raise ValueError(
-            f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
-
-    # Umbral para definir la región de inicio
-   # Umbral para definir la región de inicio
-    _, thresholded_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
-
-    plt.title('Segmentación Crecimiento de Regiones')
-    plt.imshow(thresholded_image, cmap='gray')
-    plt.axis('off')  # Ocultar los ejes
-    plt.show()
+    if show:
+        plt.title('Segmentación con Watershed')
+        plt.imshow(image, cmap='gray')
+        plt.axis('off')  # Ocultar los ejes
+        plt.show()
 
 
 def region_growing(image, seed_points, threshold=20):
@@ -846,7 +885,7 @@ def region_growing(image, seed_points, threshold=20):
     return mask
 
 
-def segmentation_region_growing(input_path: str, output_path: str = '', save: bool = False):
+def segmentation_region_growing(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
     """Segmentación de una imagen usando crecimiento de regiones."""
 
     # Cargar la imagen
@@ -876,14 +915,15 @@ def segmentation_region_growing(input_path: str, output_path: str = '', save: bo
     ax[1].set_title("Máscara Segmentada")
     ax[1].axis("off")
 
-    plt.show()
+    if show:
+        plt.show()
 
     # Guardar la imagen si se especifica
     if save and output_path != '':
         cv2.imwrite(output_path, result_mask)
 
 
-def segmentation_watershed_contours(input_path: str, output_path: str = '', save: bool = False):
+def segmentation_watershed_contours(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
     """Segmentación de una imagen usando Watershed basado en contornos."""
 
     # Cargar la imagen
@@ -929,14 +969,15 @@ def segmentation_watershed_contours(input_path: str, output_path: str = '', save
     plt.title('Segmentación Watershed')
     plt.imshow(img)
     plt.axis('off')  # Ocultar los ejes
-    plt.show()
+    if show:
+        plt.show()
 
     # Guardar la imagen si se especifica
     if save and output_path:
         cv2.imwrite(output_path, img)
 
 
-def segmentation_by_color(input_path: str, lower_bound: tuple, upper_bound: tuple, output_path: str = '', save: bool = False):
+def segmentation_by_color(input_path: str, lower_bound: tuple, upper_bound: tuple, output_path: str = '', save: bool = False, show: bool = False):
     """Segmenta una imagen basada en un rango de color en el espacio HSV."""
 
     # Cargar la imagen en color
@@ -972,24 +1013,15 @@ def segmentation_by_color(input_path: str, lower_bound: tuple, upper_bound: tupl
     ax[1].set_title("Imagen Segmentada por Color")
     ax[1].axis("off")
 
-    plt.show()
+    if show:
+        plt.show()
 
     # Guardar la imagen segmentada si se especifica
     if save and output_path:
         cv2.imwrite(output_path, segmented_image)
 
 
-def segmentation_by_color_range(input_path: str, lower_bounds: list, upper_bounds: list, output_path: str = '', save: bool = False):
-    """
-    Segmenta una imagen basada en uno o más rangos de color en el espacio HSV.
-
-    Parámetros:
-    - input_path: Ruta de la imagen de entrada.
-    - lower_bounds: Lista de rangos inferiores en HSV (puede incluir más de uno).
-    - upper_bounds: Lista de rangos superiores en HSV (debe tener la misma cantidad que lower_bounds).
-    - output_path: Ruta de la imagen segmentada (si se desea guardar).
-    - save: Booleano para decidir si guardar la imagen segmentada.
-    """
+def segmentation_by_color_range(input_path: str, lower_bounds: list, upper_bounds: list, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen en color
     image = cv2.imread(input_path)
@@ -1032,7 +1064,8 @@ def segmentation_by_color_range(input_path: str, lower_bounds: list, upper_bound
     ax[1].set_title("Máscara de Segmentación")
     ax[1].axis("off")
 
-    plt.show()
+    if show:
+        plt.show()
 
     # Guardar la imagen segmentada si se especifica
     if save and output_path:
@@ -1041,16 +1074,7 @@ def segmentation_by_color_range(input_path: str, lower_bounds: list, upper_bound
     # return segmented_image
 
 
-def apply_binary_mask(input_path: str, minValue: int = 100, maxValue = 255,  output_path: str = '', save: bool = False):
-    """
-    Aplica una máscara binaria a una imagen en escala de grises.
-
-    Parámetros:
-    - input_path: Ruta de la imagen de entrada.
-    - threshold_value: Valor del umbral (los píxeles mayores a este serán blancos, los demás negros).
-    - output_path: Ruta de la imagen segmentada (si se desea guardar).
-    - save: Booleano para decidir si guardar la imagen segmentada.
-    """
+def apply_binary_mask(input_path: str, minValue: int = 100, maxValue=255,  output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen en escala de grises
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
@@ -1061,7 +1085,7 @@ def apply_binary_mask(input_path: str, minValue: int = 100, maxValue = 255,  out
             f"Error: No se pudo cargar la imagen '{input_path}'. Verifica la ruta y el formato del archivo.")
 
     # Crear una máscara binaria (por ejemplo, seleccionar píxeles que sean mayores que 100)
-    _, mask = cv2.threshold(img, minValue , maxValue, cv2.THRESH_BINARY)
+    _, mask = cv2.threshold(img, minValue, maxValue, cv2.THRESH_BINARY)
 
     # Aplicar la máscara a la imagen original usando bitwise_and
     result = cv2.bitwise_and(img, img, mask=mask)
@@ -1070,7 +1094,8 @@ def apply_binary_mask(input_path: str, minValue: int = 100, maxValue = 255,  out
     plt.title('Segmentación de Color')
     plt.imshow(mask, cmap='gray')
     plt.axis('off')  # Ocultar los ejes
-    plt.show()
+    if show:
+        plt.show()
 
 
 # Guardar la imagen segmentada si se especifica

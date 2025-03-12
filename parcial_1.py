@@ -1,4 +1,5 @@
 import os
+import random
 import cv2
 import metodos as mt  # Importamos el archivo de métodos
 
@@ -39,9 +40,9 @@ def procesar_imagen(input_path, output_folder):
 
     # Filtros
     mt.blur_image(input_path, os.path.join(
-        output_folder, "blur.png"), save=True)
+        output_folder, "blur.png"), save=True, kernel_size=5)
     mt.gaussian_blur_image(input_path, os.path.join(
-        output_folder, "gaussian_blur.png"), save=True)
+        output_folder, "gaussian_blur.png"), save=True, kernel_size=5)
     mt.sharpen_image(input_path, os.path.join(
         output_folder, "sharpen.png"), save=True)
     mt.detect_edges(input_path, os.path.join(
@@ -63,7 +64,7 @@ def procesar_imagen(input_path, output_folder):
     mt.resize_image(input_path, os.path.join(
         output_folder, "resize.png"), save=True, width=600, height=600)
     mt.rotate_image(input_path, os.path.join(
-        output_folder, "rotate.png"), save=True, angle=97)
+        output_folder, "rotate.png"), save=True, angle= random.randint(0, 280))
 
     # Segmentación
     mt.segmentation_umbral_image(input_path, os.path.join(
@@ -76,10 +77,18 @@ def procesar_imagen(input_path, output_folder):
         output_folder, "segmentation_region_growing.png"), save=True)
     mt.segmentation_watershed_contours(input_path, os.path.join(
         output_folder, "segmentation_watershed_contours.png"), save=True)
-    mt.segmentation_by_color(input_path, (0, 50, 50), (10, 255, 255), os.path.join(
+    mt.segmentation_by_color(input_path, (0, 40, 40), (20, 255, 255), os.path.join(
         output_folder, "segmentation_by_color.png"), save=True)
-    mt.segmentation_by_color_range(input_path, [(0, 50, 50)], [(10, 255, 255)], os.path.join(
-        output_folder, "segmentation_by_color_range.png"), save=True)
+
+    # Segmentación por múltiples colores (Rojo, Verde y Azul)
+    mt.segmentation_by_color_range(input_path,
+                                   [(0, 40, 40), (160, 40, 40), (35, 40, 40),
+                                    (90, 50, 50)],  # Rojos, Verde, Azul
+                                   [(20, 255, 255), (180, 255, 255),
+                                    (85, 255, 255), (130, 255, 255)],
+                                   os.path.join(
+                                       output_folder, "segmentation_by_color_range.png"),
+                                   save=True)
 
     return binary_resized_path
 

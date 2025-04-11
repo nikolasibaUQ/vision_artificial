@@ -1,7 +1,10 @@
 import os
+
+import numpy as np
 import texturas as t
 import pandas as pd
 import parcial_1 as p1
+import momentos as m
 
 default_inputs = 'parcial_2/resources/'
 default_outputs = 'parcial_2/output/'
@@ -10,9 +13,9 @@ default_outputs = 'parcial_2/output/'
 # Obtener las imágenes de la carpeta resources
 images = os.listdir(default_inputs)
 for i in range(len(images)):
-    
-# procesar imagenes con el parcial 1
-    p1.procesar_imagen(default_inputs + images[i] , default_outputs + images[i])
+
+    # procesar imagenes con el parcial 1
+    p1.procesar_imagen(default_inputs + images[i], default_outputs + images[i])
 
 
 ruta_output = 'parcial_2/output/'
@@ -62,6 +65,8 @@ for nombre_carpeta in os.listdir(default_outputs):
             media_glcm = t.mean_glcm(ruta_imagen)
             desviacion_glcm = t.desviation_glcm(ruta_imagen)
             entropia_glcm = t.calculate_entropy_glcm(ruta_imagen)
+            hu_momentos = m.momentos_hu(ruta_imagen)
+            hu_dict = {f'Hu{i+1}': hu[0] for i, hu in enumerate(hu_momentos)}
 
             # Guardamos en la lista
             datos.append({
@@ -77,7 +82,9 @@ for nombre_carpeta in os.listdir(default_outputs):
                 'Correlación': correlacion,
                 'Media GLCM': media_glcm,
                 'Desviación GLCM': desviacion_glcm,
-                'Entropía GLCM': entropia_glcm
+                'Entropía GLCM': entropia_glcm,
+                **hu_dict,  # Añadir los momentos de Hu al diccionario,
+
             })
         except Exception as e:
             print(f"⚠️ Error al procesar {ruta_imagen}: {e}")
@@ -85,8 +92,21 @@ for nombre_carpeta in os.listdir(default_outputs):
     # Crear DataFrame y guardar el Excel solo si hay datos
     if datos:
         df = pd.DataFrame(datos)
-        output_excel = os.path.join(ruta_carpeta, 'resultados_textura.xlsx')
-        df.to_excel(output_excel, index=False)
+        hu_cols = [f'Hu{i+1}' for i in range(7)]
+        hu_original = df.loc[0, hu_cols].values.astype(
+            float)  # Primera imagen de la carpeta
+
+# Calculamos la distancia de cada imagen respecto a la imagen original
+        distancias = []
+        for idx, row in df.iterrows():
+            hu_actual = row[hu_cols].values.astype(float)
+            distancia = np.linalg.norm(hu_actual - hu_original)
+            distancias.append(distancia)
+
+# Agregamos la nueva columna
+        df['Distancia con la imagen original'] = distancias
+        output_excel = os.path.join(ruta_carpeta, 'resultados_textura.csv')
+        df.to_csv(output_excel, index=False)
         print(f"✅ Excel guardado en: {output_excel}")
     else:
         print(f"⚠️ No se procesaron imágenes en: {ruta_carpeta}")

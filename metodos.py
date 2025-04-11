@@ -7,6 +7,19 @@ import cv2
 import os
 
 
+def getImage(input_path: str):
+    """Obtiene la ruta absoluta de una imagen dada su ruta relativa o absoluta.
+
+    Args:
+        input_path (str): Ruta de la imagen.
+
+    Returns:
+        img: 
+    """
+    # Convertir a ruta absoluta
+    
+    return cv2.imread(os.path.abspath(input_path))
+
 def convert_RGB(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
     # Cargar la imagen
@@ -866,23 +879,41 @@ def segmentation_watershed(input_path: str, output_path: str = '', save: bool = 
         plt.show()
 
 
+
 def region_growing(image, seed_points, threshold=20):
-    """Algoritmo de crecimiento de regiones a partir de puntos semilla."""
+    """Algoritmo de crecimiento de regiones a partir de puntos semilla.
+    
+    Args:
+        image (numpy.ndarray): Imagen en escala de grises.
+        seed_points (list): Lista de tuplas (fila, columna).
+        threshold (int): Umbral para el crecimiento de la región.
+    
+    Returns:
+        numpy.ndarray: Máscara resultante con la región segmentada.
+    """
     rows, cols = image.shape
     mask = np.zeros_like(image, dtype=np.uint8)  # Máscara inicial
 
     for seed in seed_points:
-        mask[seed] = 255  # Marcar la semilla
-        region_mean = image[seed]  # Valor inicial
+        row, col = seed
+        # Verificar que el punto semilla está dentro de la imagen
+        if not (0 <= row < rows and 0 <= col < cols):
+            print(f"El punto semilla {seed} está fuera de los límites de la imagen (rows: {rows}, cols: {cols}). Se omite.")
+            continue
 
-        # Expansión de la región
+        mask[row, col] = 255  # Marcar la semilla
+        region_mean = image[row, col]  # Valor inicial de la semilla
+
+        # Expansión de la región: recorrer la imagen y agregar píxeles que cumplan con el umbral
         for i in range(rows):
             for j in range(cols):
-                if mask[i, j] == 0:  # Si el píxel no está marcado
+                if mask[i, j] == 0:  # Si el píxel aún no está marcado
                     if abs(int(image[i, j]) - int(region_mean)) < threshold:
-                        mask[i, j] = 255  # Agregar el píxel a la región
+                        mask[i, j] = 255
 
     return mask
+
+
 
 
 def segmentation_region_growing(input_path: str, output_path: str = '', save: bool = False, show: bool = False):

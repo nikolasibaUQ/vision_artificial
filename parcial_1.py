@@ -4,8 +4,8 @@ import cv2
 import metodos as mt  # Importamos el archivo de métodos
 
 # Directorios de entrada y salida
-input_base = "parcial_1/resources/"
-output_base = "parcial_1/output/"
+input_base = "parcial_2/resources/"
+output_base = "parcial_2/output/"
 
 os.makedirs(output_base, exist_ok=True)
 

@@ -10,27 +10,27 @@ default_inputs = 'parcial_2/resources/'
 default_outputs = 'parcial_2/output/'
 
 
-# # Obtener las imágenes de la carpeta resources
-# images = os.listdir(default_inputs)
-# for i in range(len(images)):
+# Obtener las imágenes de la carpeta resources
+images = os.listdir(default_inputs)
+for i in range(len(images)):
 
-#     # procesar imagenes con el parcial 1
-#     p1.procesar_imagen(default_inputs + images[i], default_outputs + images[i])
+    # procesar imagenes con el parcial 1
+    p1.procesar_imagen(default_inputs + images[i], default_outputs + images[i])
 
 
-# ruta_output = 'parcial_2/output/'
+ruta_output = 'parcial_2/output/'
 
-# # Recorre todos los elementos en la carpeta 'output'
-# for nombre_carpeta in os.listdir(ruta_output):
-#     ruta_completa = os.path.join(ruta_output, nombre_carpeta)
+# Recorre todos los elementos en la carpeta 'output'
+for nombre_carpeta in os.listdir(ruta_output):
+    ruta_completa = os.path.join(ruta_output, nombre_carpeta)
 
-#     # Verifica que sea una carpeta y termine en .png
-#     if os.path.isdir(ruta_completa) and nombre_carpeta.endswith('.png'):
-#         nuevo_nombre = nombre_carpeta.replace('.png', '')
-#         nueva_ruta = os.path.join(ruta_output, nuevo_nombre)
+    # Verifica que sea una carpeta y termine en .png
+    if os.path.isdir(ruta_completa) and nombre_carpeta.endswith('.png'):
+        nuevo_nombre = nombre_carpeta.replace('.png', '')
+        nueva_ruta = os.path.join(ruta_output, nuevo_nombre)
 
-#         # Renombrar la carpeta
-#         os.rename(ruta_completa, nueva_ruta)
+        # Renombrar la carpeta
+        os.rename(ruta_completa, nueva_ruta)
 #         print(f"✅ Renombrada: {nombre_carpeta} → {nuevo_nombre}")
 
 default_outputs = 'parcial_2/output/'
@@ -116,15 +116,20 @@ for nombre_carpeta in os.listdir(default_outputs):
         
 
 # Calculamos la distancia de cada imagen respecto a la imagen original
-        distancias = []
-        for idx, row in df.iterrows():
-            hu_actual = row[hu_cols].values.astype(float)
-            distancia = np.linalg.norm(hu_actual - hu_original)
-            distancias.append(distancia)
+        imagen_base = df[df['Imagen'].str.contains("original", case=False)]
+
+        if not imagen_base.empty:
+            hu_original = imagen_base.iloc[0][hu_cols].values.astype(float)
+            distancias = []
+
+            for idx, row in df.iterrows():
+                hu_actual = row[hu_cols].values.astype(float)
+                distancia = np.linalg.norm(hu_actual - hu_original)
+                distancias.append(distancia)
 
 # Agregamos la nueva columna
-        df['Distancia con la imagen original'] = distancias
-        output_excel = os.path.join(ruta_carpeta, 'resultados_textura.csv')
+        df['Distancia ecluediana imagen original'] = distancias
+        output_excel = ruta_carpeta + '.csv'
         df.to_csv(output_excel, index=False)
         print(f"✅ Excel guardado en: {output_excel}")
     else:

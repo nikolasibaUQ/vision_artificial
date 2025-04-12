@@ -4,34 +4,34 @@ import numpy as np
 import texturas as t
 import pandas as pd
 import parcial_1 as p1
-import momentos as m
+import utils as ut
 
 default_inputs = 'parcial_2/resources/'
 default_outputs = 'parcial_2/output/'
 
 
-# Obtener las imágenes de la carpeta resources
-images = os.listdir(default_inputs)
-for i in range(len(images)):
+# # Obtener las imágenes de la carpeta resources
+# images = os.listdir(default_inputs)
+# for i in range(len(images)):
 
-    # procesar imagenes con el parcial 1
-    p1.procesar_imagen(default_inputs + images[i], default_outputs + images[i])
+#     # procesar imagenes con el parcial 1
+#     p1.procesar_imagen(default_inputs + images[i], default_outputs + images[i])
 
 
-ruta_output = 'parcial_2/output/'
+# ruta_output = 'parcial_2/output/'
 
-# Recorre todos los elementos en la carpeta 'output'
-for nombre_carpeta in os.listdir(ruta_output):
-    ruta_completa = os.path.join(ruta_output, nombre_carpeta)
+# # Recorre todos los elementos en la carpeta 'output'
+# for nombre_carpeta in os.listdir(ruta_output):
+#     ruta_completa = os.path.join(ruta_output, nombre_carpeta)
 
-    # Verifica que sea una carpeta y termine en .png
-    if os.path.isdir(ruta_completa) and nombre_carpeta.endswith('.png'):
-        nuevo_nombre = nombre_carpeta.replace('.png', '')
-        nueva_ruta = os.path.join(ruta_output, nuevo_nombre)
+#     # Verifica que sea una carpeta y termine en .png
+#     if os.path.isdir(ruta_completa) and nombre_carpeta.endswith('.png'):
+#         nuevo_nombre = nombre_carpeta.replace('.png', '')
+#         nueva_ruta = os.path.join(ruta_output, nuevo_nombre)
 
-        # Renombrar la carpeta
-        os.rename(ruta_completa, nueva_ruta)
-        print(f"✅ Renombrada: {nombre_carpeta} → {nuevo_nombre}")
+#         # Renombrar la carpeta
+#         os.rename(ruta_completa, nueva_ruta)
+#         print(f"✅ Renombrada: {nombre_carpeta} → {nuevo_nombre}")
 
 default_outputs = 'parcial_2/output/'
 
@@ -65,8 +65,15 @@ for nombre_carpeta in os.listdir(default_outputs):
             media_glcm = t.mean_glcm(ruta_imagen)
             desviacion_glcm = t.desviation_glcm(ruta_imagen)
             entropia_glcm = t.calculate_entropy_glcm(ruta_imagen)
-            hu_momentos = m.momentos_hu(ruta_imagen)
+            hu_momentos = ut.momentos_hu(ruta_imagen)
             hu_dict = {f'Hu{i+1}': hu[0] for i, hu in enumerate(hu_momentos)}
+            hog_dict = ut.descriptor_hog(ruta_imagen)  # ya devuelve HOG_mean y HOG_std
+            kaze_dict = ut.kaze(ruta_imagen)
+            resumen_orb = ut.orb_descriptor(ruta_imagen)
+            akaze_dict = ut.akaze_descriptor(ruta_imagen)
+            log_dict = ut.log_features(ruta_imagen)
+
+            
 
             # Guardamos en la lista
             datos.append({
@@ -84,6 +91,12 @@ for nombre_carpeta in os.listdir(default_outputs):
                 'Desviación GLCM': desviacion_glcm,
                 'Entropía GLCM': entropia_glcm,
                 **hu_dict,  # Añadir los momentos de Hu al diccionario,
+                **hog_dict,  # Añadir el descriptor HOG al diccionario
+                **kaze_dict,  # Añadir el descriptor KAZE al diccionario
+                **resumen_orb,  # Añadir el descriptor ORB al diccionario
+                **akaze_dict,  # Añadir el descriptor AKAZE al diccionario
+                **log_dict  # Añadir el descriptor LOG al diccionario
+                
 
             })
         except Exception as e:
@@ -95,6 +108,12 @@ for nombre_carpeta in os.listdir(default_outputs):
         hu_cols = [f'Hu{i+1}' for i in range(7)]
         hu_original = df.loc[0, hu_cols].values.astype(
             float)  # Primera imagen de la carpeta
+        hog_cols = [df.columns[df.columns.str.startswith('HOG_')]]
+        kaze_cols = [df.columns[df.columns.str.startswith('KAZE_')]]
+        orb_cols = [df.columns[df.columns.str.startswith('ORB_')]]
+        akaze_cols = [df.columns[df.columns.str.startswith('AKAZE_')]]
+        log_cols = [df.columns[df.columns.str.startswith('LOG_')]]
+        
 
 # Calculamos la distancia de cada imagen respecto a la imagen original
         distancias = []

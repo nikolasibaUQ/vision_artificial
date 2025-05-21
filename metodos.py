@@ -17,8 +17,9 @@ def getImage(input_path: str):
         img: 
     """
     # Convertir a ruta absoluta
-    
+
     return cv2.imread(os.path.abspath(input_path))
+
 
 def convert_RGB(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
 
@@ -794,7 +795,6 @@ def segmentation_contornos(input_path: str, output_path: str = '', save: bool = 
         plt.imshow(cv2.cvtColor(img_contours, cv2.COLOR_BGR2RGB))
         plt.axis('off')  # Ocultar los ejes
         plt.show()
-    
 
 
 def segmentation_kmeans(input_path: str, output_path: str = '', save: bool = False, k: int = 2, show: bool = False):
@@ -879,28 +879,32 @@ def segmentation_watershed(input_path: str, output_path: str = '', save: bool = 
         plt.show()
 
 
-
 def region_growing(image, seed_points, threshold=20):
     """Algoritmo de crecimiento de regiones a partir de puntos semilla.
-    
+
     Args:
         image (numpy.ndarray): Imagen en escala de grises.
         seed_points (list): Lista de tuplas (fila, columna).
         threshold (int): Umbral para el crecimiento de la región.
-    
+
     Returns:
         numpy.ndarray: Máscara resultante con la región segmentada.
     """
     rows, cols = image.shape
     mask = np.zeros_like(image, dtype=np.uint8)  # Máscara inicial
 
+    # Filtrar puntos semilla fuera de los límites
+    valid_seeds = []
     for seed in seed_points:
         row, col = seed
-        # Verificar que el punto semilla está dentro de la imagen
-        if not (0 <= row < rows and 0 <= col < cols):
-            print(f"El punto semilla {seed} está fuera de los límites de la imagen (rows: {rows}, cols: {cols}). Se omite.")
-            continue
+        if 0 <= row < rows and 0 <= col < cols:
+            valid_seeds.append(seed)
+        else:
+            print(
+                f"El punto semilla {seed} está fuera de los límites de la imagen (rows: {rows}, cols: {cols}). Se omite.")
 
+    for seed in valid_seeds:
+        row, col = seed
         mask[row, col] = 255  # Marcar la semilla
         region_mean = image[row, col]  # Valor inicial de la semilla
 
@@ -912,8 +916,6 @@ def region_growing(image, seed_points, threshold=20):
                         mask[i, j] = 255
 
     return mask
-
-
 
 
 def segmentation_region_growing(input_path: str, output_path: str = '', save: bool = False, show: bool = False):
@@ -942,8 +944,9 @@ def segmentation_region_growing(input_path: str, output_path: str = '', save: bo
     ax[0].set_title("Imagen Original")
     ax[0].axis("off")
 
-    ax[1].imshow(result_mask, cmap="inferno")
-    ax[1].set_title("Máscara Segmentada")
+    if show:
+        plt.show()
+        plt.close(fig)
     ax[1].axis("off")
 
     if show:

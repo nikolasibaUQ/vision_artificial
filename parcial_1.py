@@ -73,8 +73,8 @@ def procesar_imagen(input_path, output_folder):
         output_folder, "segmentation_kmeans.png"), save=True)
     mt.segmentation_watershed(input_path, os.path.join(
         output_folder, "segmentation_watershed.png"), save=True)
-    mt.segmentation_region_growing(input_path, os.path.join(
-        output_folder, "segmentation_region_growing.png"), save=True)
+    # mt.segmentation_region_growing(input_path, os.path.join(
+    #     output_folder, "segmentation_region_growing.png"), save=True)
     mt.segmentation_watershed_contours(input_path, os.path.join(
         output_folder, "segmentation_watershed_contours.png"), save=True)
     mt.segmentation_by_color(input_path, (0, 40, 40), (20, 255, 255), os.path.join(

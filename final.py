@@ -2,7 +2,8 @@ import metodos as mt
 import os
 import pandas as pd
 import parcial_1 as p1
-
+import texturas as t
+import matematic_metodes as mt
 
 # obtener las imagenes de la carpeta
 sicks = 'proyecto_final/resources/sick/'
@@ -26,26 +27,27 @@ default_outputs_good = 'proyecto_final/outputs/good/'
 #         good + images[i], default_outputs_good + images[i].replace('.png', ''))
 
 
-def create_dataframe_recursively(base_path, etiqueta):
-    data = []
-    for root, _, files in os.walk(base_path):
-        for file in files:
-            if file.lower().endswith('.png'):
-                full_path = os.path.join(root, file)
-                # Genera la ruta relativa como en tu requerimiento
-                relative_path = os.path.relpath(
-                    full_path, start='proyecto_final')
-                data.append({'filename': relative_path.replace(
-                    '\\', '/'), 'etiqueta': etiqueta})
-    return pd.DataFrame(data)
+df = pd.read_csv('proyecto_final/outputs/etiquetas.csv')
 
+# Extraer características
+features = []
+for _, row in df.iterrows():
+    path = os.path.join('proyecto_final', row['filename'])
+    feature_row = {
+        'filename': row['filename'],
+        'etiqueta': row['etiqueta'],
+        'media': mt.get_media_image(path),
+        'moda': mt.get_mode_image(path),
+        'desviacion': mt.get_desviation_image(path)
+    }
+    feature_row.update(t.get_glcm_features(path))
+    feature_row.update(t.get_hog_features(path))
+    feature_row.update(t.get_laplacian_gauss_features(path))
+    features.append(feature_row)
 
-# Crear los dataframes para bueno y malo
-df_bueno = create_dataframe_recursively('proyecto_final/outputs/good', 'bueno')
-df_malo = create_dataframe_recursively('proyecto_final/outputs/sicks', 'malo')
+# Crear DataFrame final
+df_features = pd.DataFrame(features)
 
-# Concatenar y guardar
-df = pd.concat([df_bueno, df_malo], ignore_index=True)
-df.to_csv('proyecto_final/outputs/etiquetas.csv', index=False)
-
-print("✅ Archivo 'etiquetas.csv' generado correctamente con imágenes de subcarpetas.")
+# Guardar CSV
+df_features.to_csv(
+    'proyecto_final/outputs/dataset_caracteristicas.csv', index=False)

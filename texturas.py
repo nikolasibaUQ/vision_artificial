@@ -1,4 +1,9 @@
 
+import cv2
+from skimage.feature import hog
+from skimage.color import rgb2gray
+from skimage.io import imread
+from skimage.feature import graycomatrix, graycoprops
 import numpy as np
 import metodos as mt
 from skimage.feature import graycomatrix, graycoprops
@@ -111,7 +116,6 @@ def contrast(img, distances=[1], angles=[0], levels=256, symmetric=True, normed=
     return contrast[0][0]
 
 
-
 def homogeneity(img, distances=[1], angles=[0], levels=256, symmetric=True, normed=True):
     """Calcula la homogeneidad de la GLCM de una imagen.
     Args:
@@ -129,6 +133,7 @@ def homogeneity(img, distances=[1], angles=[0], levels=256, symmetric=True, norm
     homogeneity = graycoprops(glcm, 'homogeneity')
 
     return homogeneity[0][0]
+
 
 def desimilarity(img, distances=[1], angles=[0], levels=256, symmetric=True, normed=True):
     """Calcula la disimilitud de la GLCM de una imagen.
@@ -166,6 +171,7 @@ def energy(img, distances=[1], angles=[0], levels=256, symmetric=True, normed=Tr
     energy = graycoprops(glcm, 'energy')
 
     return energy[0][0]
+
 
 def correlation(img, distances=[1], angles=[0], levels=256, symmetric=True, normed=True):
     """Calcula la correlación de la GLCM de una imagen.
@@ -243,3 +249,102 @@ def calculate_entropy_glcm(img, distances=[1], angles=[0], levels=256, symmetric
     entropy_glcm = -np.sum(glcm_flat * np.log(glcm_flat))
 
     return entropy_glcm
+
+
+def get_glcm_features(image_path):
+    try:
+        img = imread(image_path)
+
+        # Si la imagen ya es gris, no aplicar rgb2gray
+        if len(img.shape) == 3 and img.shape[2] == 3:
+            gray = rgb2gray(img)
+        else:
+            gray = img / 255.0  # Normalizar si ya es gris
+
+        gray = (gray * 255).astype(np.uint8)
+
+        glcm = graycomatrix(gray, distances=[1], angles=[
+                            0], levels=256, symmetric=True, normed=True)
+
+        return {
+            'glcm_contrast': graycoprops(glcm, 'contrast')[0, 0],
+            'glcm_homogeneity': graycoprops(glcm, 'homogeneity')[0, 0],
+            'glcm_energy': graycoprops(glcm, 'energy')[0, 0],
+            'glcm_correlation': graycoprops(glcm, 'correlation')[0, 0],
+            'glcm_asm': graycoprops(glcm, 'ASM')[0, 0]
+        }
+
+    except Exception as e:
+        print(f"❌ Error procesando GLCM para {image_path}: {e}")
+        return {
+            'glcm_contrast': np.nan,
+            'glcm_homogeneity': np.nan,
+            'glcm_energy': np.nan,
+            'glcm_correlation': np.nan,
+            'glcm_asm': np.nan
+        }
+
+
+def get_hog_features(image_path):
+    try:
+        img = imread(image_path)
+
+        # Verificar si es RGB o ya está en escala de grises
+        if len(img.shape) == 3 and img.shape[2] == 3:
+            gray = rgb2gray(img)
+        else:
+            gray = img / 255.0  # Normalizar si ya es gris
+
+        gray = (gray * 255).astype(np.uint8)
+
+        features, _ = hog(
+            gray,
+            pixels_per_cell=(16, 16),
+            cells_per_block=(2, 2),
+            orientations=9,
+            block_norm='L2-Hys',
+            visualize=True
+        )
+
+        return {
+            'hog_mean': np.mean(features),
+            'hog_std': np.std(features),
+            'hog_max': np.max(features),
+            'hog_min': np.min(features)
+        }
+
+    except Exception as e:
+        print(f"❌ Error procesando HOG para {image_path}: {e}")
+        return {
+            'hog_mean': np.nan,
+            'hog_std': np.nan,
+            'hog_max': np.nan,
+            'hog_min': np.nan
+        }
+
+
+def get_laplacian_gauss_features(image_path):
+    try:
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+        if img is None:
+            raise ValueError(f"No se pudo leer la imagen: {image_path}")
+
+        blurred = cv2.GaussianBlur(img, (5, 5), 0)
+        laplacian = cv2.Laplacian(blurred, cv2.CV_64F)
+
+        return {
+            'laplacian_mean': np.mean(laplacian),
+            'laplacian_std': np.std(laplacian),
+            'laplacian_max': np.max(laplacian),
+            'laplacian_min': np.min(laplacian)
+        }
+
+    except Exception as e:
+        print(f"❌ Error procesando Laplaciano+Gauss para {image_path}: {e}")
+        return {
+            'laplacian_mean': np.nan,
+            'laplacian_std': np.nan,
+            'laplacian_max': np.nan,
+            'laplacian_min': np.nan
+        }
